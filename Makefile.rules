@@ -38,7 +38,7 @@ PSMK_RESOLVED_LDLIBS := $(filter-out -l%,$(LDLIBS)) $(foreach lib,$(patsubst -l%
 
 $(PREFIX_O)%.o: %.c
 	@mkdir -p $(@D)
-	$(SIL)(printf "CC  %s/%-24s\n" "$(notdir $(@D))" "$<")
+	$(SIL)(printf "CC  %-24s\n" "$<")
 	$(SIL)$(CC) -c $(CFLAGS) "$<" -o "$@"
 	$(SIL)$(CC) -M  -MD -MP -MF $(PREFIX_O)$*.c.d -MT "$@" $(CFLAGS) $<
 
@@ -52,19 +52,19 @@ $(PREFIX_O)%.o: %.S
 
 $(PREFIX_A)%.a:
 	@mkdir -p $(@D),
-	@(printf "AR  %s/%-24s  \n" "$(notdir $(@D))" "$(@F)")
+	@(printf "AR  %-24s  \n" "$(@F)")
 	$(SIL)$(AR) $(ARFLAGS) $@ $^ 2>/dev/null
 
 
 $(PREFIX_PROG)%: $(PREFIX_O)%.o $(PROGS_OBJS) $(PSMK_RESOLVED_LDLIBS) $(LIB)
 	@mkdir -p $(@D)
-	@(printf "LD  %s/%-24s\n" "$(notdir $(@D))" "$(@F)")
+	@(printf "LD  %-24s\n" "$(@F)")
 	$(SIL)$(LD) $(LDFLAGS) -o "$@" $(filter %.o,$^) $(LDLIBS) $(LIB) $(GCCLIB)
 
 
 $(PREFIX_PROG_STRIPPED)%: $(PREFIX_PROG)%
 	@mkdir -p $(@D)
-	@(printf "STR %s/%-24s\n" "$(notdir $(@D))" "$(@F)")
+	@(printf "STR %-24s\n" "$(@F)")
 	$(SIL)$(STRIP) -s -o "$@" "$<"
 
 

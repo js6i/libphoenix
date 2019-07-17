@@ -11,6 +11,7 @@ ARFLAGS = -r
 LD = $(CROSS)ld
 OBJCOPY = $(CROSS)objcopy
 OBJDUMP = $(CROSS)objdump
+SIZE = $(CROSS)size
 
 STRIP = $(CROSS)strip
 
@@ -18,7 +19,7 @@ STRIP = $(CROSS)strip
 
 ifneq (, $(findstring ia32, $(TARGET)))
 	CROSS ?= i386-pc-phoenix-
-	SUBDIRS = arch/ia32  $(SUBSYSTEMS)
+	ARCH_DIR = ia32
 
 
 	CFLAGS += -O2 -g -Wall -Wstrict-prototypes -nostartfiles -nostdlib\
@@ -35,7 +36,7 @@ endif
 
 ifneq (, $(findstring armv7, $(TARGET)))
 	CROSS ?= arm-phoenix-
-	SUBDIRS = arch/armv7 $(SUBSYSTEMS)
+	ARCH_DIR = armv7
 
 	CFLAGS += -O2 -Wall -Wstrict-prototypes -g -nostartfiles -nostdlib\
 		-mcpu=cortex-m3 -mthumb \
@@ -51,7 +52,7 @@ endif
 
 ifneq (, $(findstring arm-imx, $(TARGET)))
 	CROSS ?= arm-phoenix-
-	SUBDIRS = arch/arm-imx $(SUBSYSTEMS)
+	ARCH_DIR = arm-imx
 
 	CFLAGS += -Os -Wall -Wstrict-prototypes -g -nostartfiles -nostdlib\
 		-mcpu=cortex-a7 -mtune=cortex-a7 -mfpu=neon-vfpv4 -mfloat-abi=hard -mthumb\
@@ -65,7 +66,7 @@ endif
 
 ifneq (, $(findstring riscv64, $(TARGET)))
 	CROSS ?= riscv64-unknown-elf-
-	SUBDIRS = arch/riscv64 $(SUBSYSTEMS)
+	ARCH_DIR = riscv64
 
 	CFLAGS += -Wall -Wstrict-prototypes -nostartfiles -nostdlib\
 		-fomit-frame-pointer -ffreestanding \
